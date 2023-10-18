@@ -29,7 +29,8 @@
         "symfony/mailer": "5.3.*",
         "symfony/form": "5.3.*",
         "symfony/validator": "5.3.*",
-        "symfony/yaml": "5.3.*"
+        "symfony/yaml": "5.3.*",
+        "symfony/runtime": "5.4.*"
     },
     "require-dev": {
         "symfony/phpunit-bridge": "^3.0",
@@ -62,7 +63,8 @@
     },
     "config": {
         "allow-plugins": {
-            "symfony/flex": true
+            "symfony/flex": true,
+            "symfony/runtime": true
         }
     }
 }

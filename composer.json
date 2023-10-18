@@ -20,32 +20,27 @@
         "symfony/flex": "^1.20",
         "doctrine/annotations": "^1.6",
         "doctrine/doctrine-migrations-bundle": "^3.2",
-        "symfony/security-bundle": "5.0.*",
-        "symfony/asset": "5.0.*",
-        "symfony/twig-bundle": "5.0.*",
+        "symfony/security-bundle": "5.4.*",
+        "symfony/asset": "5.4.*",
+        "symfony/twig-bundle": "5.4.*",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/twig": "^2.12|^3.0",
         "symfony/monolog-bundle": "^3.8",
-        "symfony/mailer": "5.0.*",
-        "symfony/form": "5.0.*",
-        "symfony/validator": "5.0.*",
-        "symfony/yaml": "5.0.*"
+        "symfony/mailer": "5.4.*",
+        "symfony/form": "5.4.*",
+        "symfony/validator": "5.4.*",
+        "symfony/yaml": "5.4.*",
+        "symfony/runtime": "5.4.*"
     },
     "require-dev": {
         "symfony/phpunit-bridge": "^3.0",
-        "symfony/dotenv": "5.0.*",
+        "symfony/dotenv": "5.4.*",
         "symfony/maker-bundle": "1.*",
         "doctrine/doctrine-fixtures-bundle": "3.4.*",
         "symfony/stopwatch": "^5.4",
-        "symfony/web-profiler-bundle": "5.0.*"
+        "symfony/web-profiler-bundle": "5.4.*"
     },
     "scripts": {
-        "post-install-cmd": [
-            "@symfony-scripts"
-        ],
-        "post-update-cmd": [
-            "@symfony-scripts"
-        ],
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
@@ -63,12 +58,13 @@
         "symfony-assets-install": "relative",
         "symfony": {
             "allow-contrib": false,
-            "require": "5.0.*"
+            "require": "5.4.*"
         }
     },
     "config": {
         "allow-plugins": {
-            "symfony/flex": true
+            "symfony/flex": true,
+            "symfony/runtime": true
         }
     }
 }

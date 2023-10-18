@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,9 +15,9 @@ class UserController extends AbstractController
     /**
      * @Route("/users", name="user_list")
      */
-    public function listAction(): Response
+    public function listAction(UserRepository $userRepository): Response
     {
-        return $this->render('user/list.html.twig', ['users' => $this->getDoctrine()->getRepository('AppBundle:User')->findAll()]);
+        return $this->render('user/list.html.twig', ['users' => $userRepository->findAll()]);
     }
 
     /**

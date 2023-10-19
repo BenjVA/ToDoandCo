@@ -12,17 +12,16 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TaskController extends AbstractController
 {
-    /**
-     * @Route("/tasks", name="task_list")
-     */
+    #[Route('/tasks', name: 'task_list', methods: ['GET'])]
     public function listAction(TaskRepository $taskRepository): Response
     {
-        return $this->render('task/list.html.twig', ['tasks' => $taskRepository->findAll()]);
+        return $this->render(
+            'task/list.html.twig',
+            ['tasks' => $taskRepository->findAll()]
+        );
     }
 
-    /**
-     * @Route("/tasks/create", name="task_create")
-     */
+    #[Route('/tasks', name: 'task_create', methods: ['GET', 'POST'])]
     public function createAction(Request $request)
     {
         $task = new Task();
@@ -41,12 +40,13 @@ class TaskController extends AbstractController
             return $this->redirectToRoute('task_list');
         }
 
-        return $this->render('task/create.html.twig', ['form' => $form->createView()]);
+        return $this->render(
+            'task/create.html.twig',
+            ['form' => $form->createView()]
+        );
     }
 
-    /**
-     * @Route("/tasks/{id}/edit", name="task_edit")
-     */
+    #[Route("/tasks/{id}/edit", name: "task_edit", methods: ['GET', 'POST'])]
     public function editAction(Task $task, Request $request)
     {
         $form = $this->createForm(TaskType::class, $task);
@@ -67,22 +67,24 @@ class TaskController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/tasks/{id}/toggle", name="task_toggle")
-     */
+    #[Route("/tasks/{id}/toggle", name: "task_toggle", methods: ['GET', 'POST'])]
     public function toggleTaskAction(Task $task)
     {
         $task->toggle(!$task->isDone());
         $this->getDoctrine()->getManager()->flush();
 
-        $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
+        $this->addFlash(
+            'success',
+            sprintf(
+                'La tâche %s a bien été marquée comme faite.',
+                $task->getTitle()
+            )
+        );
 
         return $this->redirectToRoute('task_list');
     }
 
-    /**
-     * @Route("/tasks/{id}/delete", name="task_delete")
-     */
+    #[Route("/tasks/{id}/delete", name: "task_delete", methods: ['GET', 'DELETE'])]
     public function deleteTaskAction(Task $task)
     {
         $em = $this->getDoctrine()->getManager();

@@ -14,9 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends AbstractController
 {
-    /**
-     * @Route("/users", name="user_list")
-     */
+    #[Route("/users", name: "user_list", methods: ['GET'])]
     public function listAction(UserRepository $userRepository): Response
     {
         return $this->render(
@@ -25,9 +23,7 @@ class UserController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/users/create", name="user_create")
-     */
+    #[Route("/users/create", name: "user_create", methods: ['GET', 'POST'])]
     public function createAction(
         Request $request,
         EntityManagerInterface $entityManager,
@@ -60,21 +56,23 @@ class UserController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/users/{id}/edit", name="user_edit")
-     */
-    public function editAction(User $user, Request $request)
-    {
+    #[Route("/users/{id}/edit", name: "user_edit", methods: ['GET', 'POST'])]
+    public function editAction(
+        User $user,
+        Request $request,
+        UserPasswordHasherInterface $userPasswordHasher
+    ) {
         $form = $this->createForm(UserType::class, $user);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $password = $this->get('security.password_encoder')->encodePassword(
-                $user,
-                $user->getPassword()
+            $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $user,
+                    $form->get('password')->getData()
+                )
             );
-            $user->setPassword($password);
 
             $this->getDoctrine()->getManager()->flush();
 

@@ -21,7 +21,7 @@ class TaskController extends AbstractController
         );
     }
 
-    #[Route('/tasks', name: 'task_create', methods: ['GET', 'POST'])]
+    #[Route('/tasks/create', name: 'task_create', methods: ['GET', 'POST'])]
     public function createAction(Request $request)
     {
         $task = new Task();

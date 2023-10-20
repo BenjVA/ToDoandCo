@@ -1,0 +1,9 @@
+version: "1.0"
+linter: jetbrains/qodana-php:2023.2
+php:
+  version: "8.1"
+exclude:
+  - name: All
+    paths:
+      - composer.lock
+      - migrations

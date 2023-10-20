@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Task;
 use App\Form\TaskType;
 use App\Repository\TaskRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -88,6 +89,7 @@ class TaskController extends AbstractController
     #[Route("/tasks/{id}/delete", name: "task_delete", methods: ['GET', 'DELETE'])]
     public function deleteTaskAction(Task $task)
     {
+        $this->denyAccessUnlessGranted('task_delete', $task);
         $em = $this->getDoctrine()->getManager();
         $em->remove($task);
         $em->flush();

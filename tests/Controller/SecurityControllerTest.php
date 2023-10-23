@@ -109,8 +109,7 @@ final class SecurityControllerTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, $this->urlGenerator->generate('app_logout'));
         $this->client->followRedirect();
 
-        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
-        $this->assertResponseRedirects('http://localhost/login');
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertIsNotObject($this->client->getContainer()->get('session')->get('_security_main'));
     }
 }

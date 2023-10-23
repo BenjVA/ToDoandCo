@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 #[CoversFunction('createAction')]
 #[CoversFunction('toggleTaskAction')]
 #[CoversFunction('deleteTaskAction')]
+#[CoversFunction('editTaskAction')]
 final class TaskControllerTest extends WebTestCase
 {
     private KernelBrowser $client;
@@ -44,7 +45,9 @@ final class TaskControllerTest extends WebTestCase
             'doctrine.orm.entity_manager'
         )->getRepository(Task::class);
 
-        $this->user = $this->userRepository->findOneByEmail('admin@email.com');
+        $this->admin = $this->userRepository->findOneByEmail('admin@email.com');
+        $this->user = $this->userRepository->findOneByEmail('nathalie.morin@dbmail.com');
+        $this->anonUser = $this->userRepository->findOneByEmail('anon@anon.fr');
     }
 
     public function testAccessTasksListWhenLoggedIn(): void
@@ -112,17 +115,101 @@ final class TaskControllerTest extends WebTestCase
     {
         $this->client->loginUser($this->user);
         $crawler = $this->client->request(
-            'GET',
+            'POST',
             '/tasks/create'
         );
 
         $form = $crawler->selectButton('Ajouter')->form();
         $form['task[title]'] = 'Tache';
         $form['task[content]'] = 'Contenu';
+        $this->client->submit($form);
+        $this->client->followRedirect();
+        $task = $this->taskRepository->findOneBy(['title' => 'Tâche']);
+
+        $this->assertNotNull($task);
+        $this->assertSame("http://localhost/tasks", $this->client->getCrawler()->getUri());
+        $this->assertSelectorTextContains('.alert-success', "La tâche a été bien été ajoutée.");
+        $this->assertResponseIsSuccessful();
+    }
+
+    public function testUsersCanEditAnonCreatedTasks(): void
+    {
+        $this->client->loginUser($this->user);
+        $task = $this->taskRepository->findOneByTitle('TestTitle');
+        $crawler = $this->client->request(
+            'POST',
+            '/tasks/' . $task->getId() . '/edit'
+        );
+
+        $form = $crawler->selectButton('Modifier')->form();
+        $form['task[title]'] = 'TacheEdit';
+        $form['task[content]'] = 'ContenuEdit';
 
         $this->client->submit($form);
         $this->client->followRedirect();
+        $this->assertSelectorTextContains('.alert-success', "La tâche a bien été modifiée.");
+        $this->assertNotNull($this->taskRepository->findOneBy(['title' => 'TacheEdit']));
+        $this->assertNotNull($this->taskRepository->findOneBy(['content' => 'ContenuEdit']));
+        $this->assertNull($this->taskRepository->findOneBy(['title' => 'TestTitle']));
+        $this->assertNotEquals(
+            $this->taskRepository->findOneBy(['title' => 'TacheEdit'])->getUser(),
+            $this->user
+        );
+    }
+
+    public function testAdminCanDeleteAnonTasks(): void
+    {
+        $this->client->loginUser($this->admin);
+        $task = $this->taskRepository->findOneByTitle('TestTitle');
+        $this->client->request(
+            'DELETE',
+            '/tasks/' . $task->getId() . '/delete'
+        );
+        $this->client->followRedirect();
 
         $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextContains('.alert-success', "La tâche a bien été supprimée.");
+        $this->assertNull($this->taskRepository->findOneByTitle('TestTitle'));
+    }
+
+    public function testUsersCanToggleTask(): void
+    {
+        $this->client->loginUser($this->user);
+        $task = $this->taskRepository->findOneByTitle('TestTitle');
+        $taskStatusBefore = $task->isDone();
+        $this->client->request(
+            'GET',
+            '/tasks/' . $task->getId() . '/toggle'
+        );
+        $taskStatusAfter = $task->isDone();
+
+        $this->assertNotSame($taskStatusBefore, $taskStatusAfter);
+        $this->assertIsBool($taskStatusAfter);
+        $this->assertIsBool($taskStatusBefore);
+    }
+
+    public function testUsersCanDeleteTheirOwnTask(): void
+    {
+        $this->testUsersCreateNewTask();
+        $task = $this->taskRepository->findOneBy(['title' => 'Tâche']);
+        $author = $task->getUser();
+        $this->client->loginUser($author);
+        $this->client->request('GET', '/tasks/' . $task->getId() . '/delete');
+        $this->client->followRedirect();
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextContains('.alert-success', "La tâche a bien été supprimée.");
+        $this->assertNull($this->taskRepository->findOneByTitle('Tâche'));
+    }
+
+    public function testUsersCannotDeleteOthersTask(): void
+    {
+        $this->testUsersCreateNewTask();
+        $task = $this->taskRepository->findOneBy(['title' => 'Tâche']);
+        $author = $task->getUser();
+        $this->client->loginUser($this->admin);
+        $this->client->request('GET', '/tasks/' . $task->getId() . '/delete');
+        $this->assertNotSame($author, $this->admin);
+        $this->assertResponseStatusCodeSame(403);
+        $this->assertNotNull($task);
     }
 }

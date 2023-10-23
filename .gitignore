@@ -16,9 +16,10 @@
 /web/bundles/
 
 ###> symfony/phpunit-bridge ###
-.phpunit
 .phpunit.result.cache
+.phpunit.cache/*
 /phpunit.xml
+bin/.phpunit
 ###< symfony/phpunit-bridge ###
 
 ###> symfony/framework-bundle ###
@@ -39,4 +40,6 @@
 ###> phpunit/phpunit ###
 /phpunit.xml
 .phpunit.result.cache
+.phpunit.cache/*
+
 ###< phpunit/phpunit ###

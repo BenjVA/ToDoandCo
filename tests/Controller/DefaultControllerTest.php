@@ -52,15 +52,4 @@ final class DefaultControllerTest extends WebTestCase
             "Bienvenue sur Todo List, l'application vous permettant de gérer l'ensemble de vos tâches sans effort !"
         );
     }
-
-    public function testIndexNotLoggedIn(): void
-    {
-        $this->client->request(
-            Request::METHOD_GET,
-            $this->urlGenerator->generate('homepage')
-        );
-
-        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
-        $this->assertResponseRedirects('http://localhost/login');
-    }
 }

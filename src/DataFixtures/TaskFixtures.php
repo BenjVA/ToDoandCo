@@ -26,7 +26,26 @@ class TaskFixtures extends Fixture implements DependentFixtureInterface
             ;
             $manager->persist($task);
         }
+        $testTask = $this->createTestTask();
+        $manager->persist($testTask);
+
         $manager->flush();
+    }
+
+    public function createTestTask(): Task
+    {
+        $anonymousUser = $this->getReference(UserFixtures::getReferenceKey('anon'));
+        $faker = Factory::create('fr_FR');
+
+        $createdAt = $faker->dateTimeThisYear();
+        $testTask = new Task();
+        $testTask->setTitle('TestTitle')
+            ->setContent('TestContent')
+            ->setCreatedAt($createdAt)
+            ->toggle(false)
+            ->setUser($anonymousUser);
+
+        return $testTask;
     }
 
     public function getDependencies(): array

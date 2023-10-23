@@ -19,10 +19,10 @@ class UserFixtures extends Fixture
         $faker = Factory::create('fr_FR');
         for ($i = 0; $i < 10; ++$i) {
             $user = new User();
-            $password = $faker->word();
             $user->setUsername($faker->userName())
                 ->setEmail($faker->email())
-                ->setPassword($this->passwordHasher->hashPassword($user, $password));
+                ->setPassword($this->passwordHasher->hashPassword($user, 'password'))
+                ->setRoles(['ROLE_USER']);
             $this->addReference(self::getReferenceKey($i), $user);
             $manager->persist($user);
         }
@@ -54,8 +54,8 @@ class UserFixtures extends Fixture
         $anon = new User();
         $anon->setEmail('anon@anon.fr')
             ->setUsername("anon")
-            ->setPassword("anonymouspassword")
-            ->setRoles(['']);
+            ->setPassword($this->passwordHasher->hashPassword($anon, 'anonymouspassword'))
+            ->setRoles([]);
 
         $this->addReference(self::getReferenceKey('anon'), $anon);
         return $anon;

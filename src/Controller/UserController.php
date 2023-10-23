@@ -49,7 +49,7 @@ class UserController extends AbstractController
 
             $this->addFlash('success', "L'utilisateur a bien été ajouté.");
 
-            return $this->redirectToRoute('user_list');
+            return $this->redirectToRoute('homepage');
         }
 
         return $this->render(
@@ -63,14 +63,16 @@ class UserController extends AbstractController
     public function editAction(
         User $user,
         Request $request,
+        EntityManagerInterface $entityManager
     ) {
         $form = $this->createForm(UserType::class, $user)
-            ->remove('password');
+            ->remove('password')
+            ->remove('email');
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager->flush();
 
             $this->addFlash('success', "L'utilisateur a bien été modifié");
 

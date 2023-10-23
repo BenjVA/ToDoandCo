@@ -43,6 +43,9 @@
                 {% if app.user %}
                 <a href="{{ path('app_logout') }}" class="pull-right btn btn-danger">Se déconnecter</a>
                 {% endif %}
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('user_list') }}" class="btn btn-primary">Liste des utilisateurs</a>
+                {% endif %}
 
                 {% if not app.user and 'app_login' != app.request.attributes.get('_route') %}
                 <a href="{{ path('app_login') }}" class="btn btn-success">Se connecter</a>

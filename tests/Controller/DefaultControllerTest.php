@@ -6,9 +6,7 @@ namespace App\Tests\Controller;
 
 use App\Entity\User;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\CoversFunction;
 use PHPUnit\Framework\Attributes\Group;
-use PHPUnit\Framework\Attributes\UsesClass;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,8 +14,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 #[Group('homepage')]
 #[CoversClass(User::class)]
-#[UsesClass(User::class)]
-#[CoversFunction('indexAction')]
 final class DefaultControllerTest extends WebTestCase
 {
     private KernelBrowser $client;

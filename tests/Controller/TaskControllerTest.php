@@ -9,9 +9,7 @@ use App\Entity\Task;
 use App\Entity\User;
 use App\Form\TaskType;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\CoversFunction;
 use PHPUnit\Framework\Attributes\Group;
-use PHPUnit\Framework\Attributes\UsesClass;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,14 +17,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 #[Group('task')]
 #[CoversClass(TaskController::class)]
-#[UsesClass(TaskType::class)]
-#[UsesClass(Task::class)]
-#[UsesClass(User::class)]
-#[CoversFunction('listAction')]
-#[CoversFunction('createAction')]
-#[CoversFunction('toggleTaskAction')]
-#[CoversFunction('deleteTaskAction')]
-#[CoversFunction('editTaskAction')]
+#[CoversClass(TaskType::class)]
+#[CoversClass(Task::class)]
+#[CoversClass(User::class)]
 final class TaskControllerTest extends WebTestCase
 {
     private KernelBrowser $client;

@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
+use App\Controller\SecurityController;
 use App\Entity\User;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\CoversFunction;
 use PHPUnit\Framework\Attributes\Group;
-use PHPUnit\Framework\Attributes\UsesClass;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,9 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 #[Group('security')]
 #[CoversClass(User::class)]
-#[UsesClass(User::class)]
-#[CoversFunction('login')]
-#[CoversFunction('logout')]
+#[CoversClass(SecurityController::class)]
 final class SecurityControllerTest extends WebTestCase
 {
     private KernelBrowser $client;

@@ -18,6 +18,10 @@
     <include>
       <directory suffix=".php">src</directory>
     </include>
+    <exclude>
+      <directory suffix=".php">src/DataFixtures</directory>
+      <directory suffix=".php">src/Repository</directory>
+    </exclude>
   </coverage>
   <extensions>
     <bootstrap class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension" />

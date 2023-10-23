@@ -63,6 +63,7 @@ class UserController extends AbstractController
     public function editAction(
         User $user,
         Request $request,
+        EntityManagerInterface $entityManager
     ) {
         $form = $this->createForm(UserType::class, $user)
             ->remove('password')
@@ -71,7 +72,7 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager->flush();
 
             $this->addFlash('success', "L'utilisateur a bien été modifié");
 

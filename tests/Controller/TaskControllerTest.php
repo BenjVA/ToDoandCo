@@ -20,6 +20,8 @@ use Symfony\Component\HttpFoundation\Response;
 #[Group('task')]
 #[CoversClass(TaskController::class)]
 #[UsesClass(TaskType::class)]
+#[UsesClass(Task::class)]
+#[UsesClass(User::class)]
 #[CoversFunction('listAction')]
 #[CoversFunction('createAction')]
 #[CoversFunction('toggleTaskAction')]

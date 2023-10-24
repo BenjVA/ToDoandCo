@@ -15,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('username', TextType::class, ['label' => "Nom d'utilisateur"])
@@ -36,7 +36,7 @@ class UserType extends AbstractType
             ])
             ->get('roles')->addModelTransformer(new CallbackTransformer(
                 function ($rolesArray) {
-                    if (in_array('ROLE_ADMIN', $rolesArray)) {
+                    if (in_array('ROLE_ADMIN', $rolesArray, true)) {
                         return 'ROLE_ADMIN';
                     }
                     return 'ROLE_USER';
@@ -45,13 +45,12 @@ class UserType extends AbstractType
                     return [$rolesString];
                 }
             ));
-        ;
     }
 
     /**
      * @param OptionsResolver $resolver
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => User::class,

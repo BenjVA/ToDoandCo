@@ -25,6 +25,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=25, unique=true)
      * @Assert\NotBlank(message="Vous devez saisir un nom d'utilisateur.")
+     * @Assert\Unique(message="Le pseudo choisit existe déjà")
      */
     private string $username;
 
@@ -43,6 +44,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=60, unique=true)
      * @Assert\NotBlank(message="Vous devez saisir une adresse email.")
      * @Assert\Email(message="Le format de l'adresse n'est pas correcte.")
+     * @Assert\Unique(message="L'adresse mail choisit existe déjà")
      */
     private string $email;
 
@@ -66,7 +68,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->username;
+        return $this->username;
     }
 
     public function setUsername(string $username): self
@@ -83,7 +85,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->username;
+        return $this->username;
     }
 
     /**
@@ -125,7 +127,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->email;
     }
 
-    public function setEmail($email): self
+    public function setEmail(string $email): self
     {
         $this->email = $email;
 
@@ -146,7 +148,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;

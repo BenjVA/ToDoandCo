@@ -6,7 +6,7 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use AveIsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,7 +30,7 @@ class UserController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
         UserPasswordHasherInterface $userPasswordHasher
-    ) {
+    ): Response {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
 
@@ -64,7 +64,7 @@ class UserController extends AbstractController
         User $user,
         Request $request,
         EntityManagerInterface $entityManager
-    ) {
+    ): Response {
         $form = $this->createForm(UserType::class, $user)
             ->remove('password')
             ->remove('email');

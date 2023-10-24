@@ -23,8 +23,10 @@ class TaskController extends AbstractController
     }
 
     #[Route('/tasks/create', name: 'task_create', methods: ['GET', 'POST'])]
-    public function createAction(Request $request, EntityManagerInterface $entityManager)
-    {
+    public function createAction(
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): Response {
         $task = new Task();
         $form = $this->createForm(TaskType::class, $task);
 
@@ -48,8 +50,11 @@ class TaskController extends AbstractController
     }
 
     #[Route("/tasks/{id}/edit", name: "task_edit", methods: ['GET', 'POST'])]
-    public function editAction(Task $task, Request $request, EntityManagerInterface $entityManager)
-    {
+    public function editAction(
+        Task $task,
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): Response {
         $form = $this->createForm(TaskType::class, $task);
 
         $form->handleRequest($request);
@@ -68,9 +73,14 @@ class TaskController extends AbstractController
         ]);
     }
 
-    #[Route("/tasks/{id}/toggle", name: "task_toggle", methods: ['GET', 'POST'])]
-    public function toggleTaskAction(Task $task, EntityManagerInterface $entityManager)
-    {
+    #[Route("/tasks/{id}/toggle", name: "task_toggle", methods: [
+        'GET',
+        'POST',
+    ])]
+    public function toggleTaskAction(
+        Task $task,
+        EntityManagerInterface $entityManager
+    ): Response {
         $task->toggle(!$task->isDone());
         $entityManager->flush();
 
@@ -85,9 +95,14 @@ class TaskController extends AbstractController
         return $this->redirectToRoute('task_list');
     }
 
-    #[Route("/tasks/{id}/delete", name: "task_delete", methods: ['GET', 'DELETE'])]
-    public function deleteTaskAction(Task $task, EntityManagerInterface $entityManager)
-    {
+    #[Route("/tasks/{id}/delete", name: "task_delete", methods: [
+        'GET',
+        'DELETE',
+    ])]
+    public function deleteTaskAction(
+        Task $task,
+        EntityManagerInterface $entityManager
+    ): Response {
         $this->denyAccessUnlessGranted('task_delete', $task);
 
         $entityManager->remove($task);

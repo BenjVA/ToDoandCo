@@ -7,3 +7,4 @@ exclude:
     paths:
       - composer.lock
       - migrations
+      - public/testResults

@@ -4,7 +4,6 @@ namespace App\Security;
 
 use App\Entity\Task;
 use App\Entity\User;
-use Exception;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Security;
@@ -47,7 +46,7 @@ class TaskVoter extends Voter
         string $attribute,
         $subject,
         TokenInterface $token
-    ) {
+    ): bool {
         $user = $token->getUser();
 
         if (!$user instanceof User) {

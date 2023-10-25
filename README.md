@@ -11,6 +11,8 @@ Badges are from: [shields.io](https://shields.io/)
 
 This project consists in auditing, testing, profiling & making improvements to an existing to-do list app built in Symfony 3.1 and upgrading it to 5.4
 
+Click here to check how to [contribute](https://github.com/BenjVA/ToDoandCo/blob/main/CONTRIBUTING.md)
+
 
 ## Requirements
 

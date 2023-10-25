@@ -112,7 +112,8 @@ Enhancement suggestions are tracked as [GitHub issues](https://github.com/BenjVA
 ### Your First Code Contribution
 To set up the project please refer to the [documentation](https://github.com/BenjVA/ToDoandCo/blob/main/README.md)
 
-You can fork the repository and then work on an issue labelled 'good first issue' 
+You can fork the repository and then work on an issue labelled 'good first issue'. 
+When you are finished working with your issue, you have to submit a pull request, which will be reviewed by our team and merge if everything is right.
 
 ### Testing 
 

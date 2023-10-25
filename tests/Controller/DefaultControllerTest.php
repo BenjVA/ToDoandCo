@@ -22,12 +22,6 @@ final class DefaultControllerTest extends WebTestCase
     {
         $this->client = self::createClient();
 
-        $this->userRepository = $this->client->getContainer()->get(
-            'doctrine.orm.entity_manager'
-        )->getRepository(User::class);
-
-        $this->user = $this->userRepository->findOneByEmail('admin@email.com');
-
         $this->urlGenerator = $this->client->getContainer()->get(
             'router.default'
         );
@@ -35,7 +29,6 @@ final class DefaultControllerTest extends WebTestCase
 
     public function testIndex(): void
     {
-        $this->client->loginUser($this->user);
         $this->client->request(
             Request::METHOD_GET,
             $this->urlGenerator->generate('homepage')

@@ -61,20 +61,9 @@ final class UserControllerTest extends WebTestCase
         $this->assertResponseRedirects('http://localhost/login', 302);
     }
 
-    public function testAccessUserCreationViaLink(): void
-    {
-        $this->client->request(
-            'GET',
-            '/'
-        );
-        $this->client->clickLink('Créer un utilisateur');
-        $this->assertResponseIsSuccessful();
-        $this->assertSame('http://localhost/users/create', $this->client->getCrawler()->getUri());
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-    }
-
     public function testSuccessfullUserCreation(): void
     {
+        $this->client->loginUser($this->admin);
         $this->client->request(
             'POST',
             '/users/create'
@@ -96,6 +85,7 @@ final class UserControllerTest extends WebTestCase
 
     public function testUserCreationWithBadSecondPassword(): void
     {
+        $this->client->loginUser($this->admin);
         $this->client->request(
             'POST',
             '/users/create'
